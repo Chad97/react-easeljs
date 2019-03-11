@@ -61,7 +61,6 @@ export default class Photo extends React.Component {
             let hh = this.state.e2 - this.state.s2
             console.log(ww +'---'+ hh)
             ctx.strokeRect(this.state.s1,this.state.s2,ww,hh);  //绘制矩形（无填充）
-            
 
         })
         

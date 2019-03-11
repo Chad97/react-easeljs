@@ -1,5 +1,7 @@
 import React from 'react'
-import Photo from './Photo'
+
+import Easel from './/Easel';
+
 
 import { Layout, Breadcrumb } from 'antd';
 const {  Content, Footer } = Layout
@@ -44,7 +46,7 @@ export default class Home extends React.Component {
 
                     {/* 上传按钮 */}
                     <input type="file" ref="myinput" accept = "image/*" onChange = {this.selectFile.bind(this)} />
-                    <Photo data1={this.state.data1} data={this.state.imgdata}></Photo>
+                    
                 </div>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>
