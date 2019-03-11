@@ -4,10 +4,11 @@ export default class Eeasel extends Component {
       super ()
       this.startX = 0;
       this.startY = 0;
-      this.rects = [];
-      this.shapes = [];
+      this.rects = [];//矩形
+      this.shapes = [];//实例对象
       this.status = "none";
       this.currentShape = null;
+      this.oldrects = true //删除前的矩形
       
   }
 
@@ -25,14 +26,16 @@ export default class Eeasel extends Component {
     this.props.onRef(this)
   }
 
+
   onStageMouseDown(e){
     this.status = "drawing";
     this.currentShape = new window.createjs.Shape();
     this.currentShape.graphics.beginFill("red")
-    this.currentShape.alpha = 0.5
+    this.currentShape.alpha = 0.1
     this.stage.addChild(this.currentShape);
     this.startX = e.stageX;
     this.startY = e.stageY;
+    console.log(this.shapes)
   }
 
   onStageMouseMove(e){
@@ -50,18 +53,47 @@ export default class Eeasel extends Component {
       width: e.stageX - this.startX,
       height: e.stageY - this.startY
     });
-    this.shapes.push(this.currentShape);   
-    
+    this.shapes.push(this.currentShape);  
   }
+
   onEnter(){
     this.stage.update();
-
   }
+
   //清除画布
   removeEasel = () => {
+    this.delAll()
+  }
+  delAll = () => {
+    for (let i = 0;i<this.rects.length;i++) {
       this.stage.removeChildAt(0)
-      this.rects.shift()
-      console.log(this.rects)
+    }
+    this.rects.splice(0,this.rects.length);//清空数组
+    console.log(this.rects)
+  }
+
+  del = () => {
+    if (this.oldrects == "") {
+      return false
+    }
+    this.oldrects = this.rects.shift()
+    console.log(this.oldrects)
+    this.stage.removeChildAt(0)
+    console.log(this.rects)
+  }
+
+  forward = () => {
+    if (this.oldrects == undefined) {
+      return false
+    }
+    this.currentShape = new window.createjs.Shape();
+    this.currentShape.graphics.beginFill("red")
+    this.currentShape.alpha = 0.1
+    this.currentShape.graphics.drawRect(this.oldrects.x, this.oldrects.y, this.oldrects.width, this.oldrects.height);
+    this.currentShape.graphics.endFill();
+    // this.shapes.push(this.currentShape);
+    // this.rects.push(rect);
+    this.stage.addChild(this.currentShape);
   }
 
   render() {

@@ -15,8 +15,16 @@ export default class Photo extends React.Component {
         this.child = ref
     }
 
-    p_removeEasel = (e) => {
+    p_removeEasel = () => {
         this.child.removeEasel()
+        
+    }
+    p_goBack = () => {
+        this.child.del()
+    }
+
+    p_forward = () => {
+        this.child.forward()
     }
 
     render () {
