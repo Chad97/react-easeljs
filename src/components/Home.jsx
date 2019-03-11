@@ -52,6 +52,7 @@ export default class Home extends React.Component {
                     {/* 上传按钮 */}
                     <input type="file" ref="myinput" accept = "image/*" onChange = {this.selectFile.bind(this)} />
                     <Button size="small" type="primary">提交上传</Button>
+                    {/* 加一个massage */}
                     <Button onClick={this.remove} size="small" type="danger" style={ {marginLeft: '4em'}}  >清除绘画</Button>
                     </div>
                     <Photo onRef={this.onRef}  data={this.state.imgdata}></Photo>
