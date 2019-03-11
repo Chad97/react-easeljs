@@ -1,9 +1,6 @@
 import React from 'react'
-
-import Easel from './/Easel';
-
-
-import { Layout, Breadcrumb } from 'antd';
+import { Layout, Breadcrumb, Button } from 'antd';
+import Photo from './Photo';
 const {  Content, Footer } = Layout
 
 
@@ -14,7 +11,6 @@ export default class Home extends React.Component {
         this.state = {
             //Content 样式
             homestyle: { background: '#fff', padding: 24, minHeight: '90%', height: '100%' },
-            data1: '123',
             imgdata: ''
         }
         
@@ -33,7 +29,15 @@ export default class Home extends React.Component {
         }
         //console.log(this.state.imgdata)
     }
-    
+
+    onRef = (ref) => {
+        this.child = ref
+    }
+    remove = () => {
+        this.child.p_removeEasel()
+    }
+
+
     render () {
         return <div style={ {height: '100%'} }>
             
@@ -44,9 +48,13 @@ export default class Home extends React.Component {
                 </Breadcrumb>
                 <div  style={ this.state.homestyle }>
 
+                    <div style={ { display:'flex',flex: 'inherit', justifyContent: 'start'} }>
                     {/* 上传按钮 */}
                     <input type="file" ref="myinput" accept = "image/*" onChange = {this.selectFile.bind(this)} />
-                    
+                    <Button size="small" type="primary">提交上传</Button>
+                    <Button onClick={this.remove} size="small" type="danger" style={ {marginLeft: '4em'}}  >清除绘画</Button>
+                    </div>
+                    <Photo onRef={this.onRef}  data={this.state.imgdata}></Photo>
                 </div>
                 </Content>
                 <Footer style={{ textAlign: 'center' }}>

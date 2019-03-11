@@ -18,10 +18,11 @@ export default class Eeasel extends Component {
     this.stage = new window.createjs.Stage(this.canvas);
     window.createjs.Ticker.setFPS(60);
     window.createjs.Ticker.addEventListener("tick", this.onEnter.bind(this));
-
     this.stage.addEventListener("stagemousedown", this.onStageMouseDown.bind(this));
     this.stage.addEventListener("stagemousemove", this.onStageMouseMove.bind(this));
     this.stage.addEventListener("stagemouseup", this.onStageMouseUp.bind(this));
+
+    this.props.onRef(this)
   }
 
   onStageMouseDown(e){
@@ -32,8 +33,6 @@ export default class Eeasel extends Component {
     this.stage.addChild(this.currentShape);
     this.startX = e.stageX;
     this.startY = e.stageY;
-    console.log(this);
-    
   }
 
   onStageMouseMove(e){
@@ -51,17 +50,23 @@ export default class Eeasel extends Component {
       width: e.stageX - this.startX,
       height: e.stageY - this.startY
     });
-    this.shapes.push(this.currentShape);
-    console.log(this.rects, this.shapes);
+    this.shapes.push(this.currentShape);   
+    
   }
-
   onEnter(){
     this.stage.update();
+
+  }
+  //清除画布
+  removeEasel = () => {
+      this.stage.removeChildAt(0)
+      this.rects.shift()
+      console.log(this.rects)
   }
 
   render() {
     return (
-      <div>
+      <div  style={ {position:"absolute", zIndex:"99"} }>
         <canvas
           ref={(ref) => this.canvas = ref}
           onMouseDown={this.myDown}
