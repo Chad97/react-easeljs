@@ -22,10 +22,10 @@ export default class Eeasel extends Component {
     this.stage.addEventListener("stagemousedown", this.onStageMouseDown.bind(this));
     this.stage.addEventListener("stagemousemove", this.onStageMouseMove.bind(this));
     this.stage.addEventListener("stagemouseup", this.onStageMouseUp.bind(this));
-
+    //参考 DragAndDrop_hitArea
+    this.stage.addEventListener("pressmove", this.onStagepressmove.bind(this));
     this.props.onRef(this)
   }
-
 
   onStageMouseDown(e){
     this.status = "drawing";
@@ -47,6 +47,9 @@ export default class Eeasel extends Component {
     this.staus = "none";
     this.currentShape.graphics.drawRect(this.startX, this.startY, e.stageX - this.startX, e.stageY - this.startY);
     this.currentShape.graphics.endFill();
+    // this.currentShape.addEventListener('pressmove', function (e) {
+    //   alert('按下移动了')
+    // })
     this.rects.push({
       x: this.startX,
       y: this.startY,
@@ -94,6 +97,12 @@ export default class Eeasel extends Component {
     // this.shapes.push(this.currentShape);
     // this.rects.push(rect);
     this.stage.addChild(this.currentShape);
+  }
+
+  onStagepressmove(e) {
+    // this.stage.x= this.startX
+    // this.stage.y= this.startY
+    console.log(e)
   }
 
   render() {
