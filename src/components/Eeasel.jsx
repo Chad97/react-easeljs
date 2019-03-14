@@ -9,7 +9,7 @@ export default class Eeasel extends Component {
       this.status = "none";
       this.currentShape = null;
       this.oldrects = true //删除前的矩形
-      
+      this.DownState = true //按键状态节流  
   }
 
   componentDidMount () {
@@ -29,34 +29,33 @@ export default class Eeasel extends Component {
 
   onStageMouseDown(e){
     this.status = "drawing";
+    this.DownState = true;
     this.currentShape = new window.createjs.Shape();
     this.currentShape.graphics.beginFill("red")
-    this.currentShape.alpha = 0.1
+    this.currentShape.alpha = 0.2
     this.stage.addChild(this.currentShape);
     this.startX = e.stageX;
     this.startY = e.stageY;
-    console.log(this.shapes)
   }
 
   onStageMouseMove(e){
+    if (!this.DownState) return;
     if(this.status !== "drawing") return;
     this.currentShape.graphics.drawRect(this.startX, this.startY, e.stageX - this.startX, e.stageY - this.startY);
   }
 
   onStageMouseUp(e){
     this.staus = "none";
+    if (!this.DownState) return;
     this.currentShape.graphics.drawRect(this.startX, this.startY, e.stageX - this.startX, e.stageY - this.startY);
     this.currentShape.graphics.endFill();
-    // this.currentShape.addEventListener('pressmove', function (e) {
-    //   alert('按下移动了')
-    // })
     this.rects.push({
       x: this.startX,
       y: this.startY,
       width: e.stageX - this.startX,
       height: e.stageY - this.startY
     });
-    this.shapes.push(this.currentShape);  
+    this.shapes.push(this.currentShape); 
   }
 
   onEnter(){
@@ -65,24 +64,24 @@ export default class Eeasel extends Component {
 
   //清除画布
   removeEasel = () => {
-    this.delAll()
+      this.delAll()
   }
   delAll = () => {
-    for (let i = 0;i<this.rects.length;i++) {
+    for (let i = 0;i<this.shapes.length;i++) {
       this.stage.removeChildAt(0)
     }
-    this.rects.splice(0,this.rects.length);//清空数组
+    this.rects.splice(0,this.rects.length);
+    this.shapes.splice(0,this.shapes.length);
     console.log(this.rects)
   }
 
   del = () => {
-    if (this.oldrects == "") {
-      return false
-    }
+    if (this.oldrects == "") return;
     this.oldrects = this.rects.shift()
+    this.oldrects = this.shapes.shift()
     console.log(this.oldrects)
     this.stage.removeChildAt(0)
-    console.log(this.rects)
+    console.log('rects：' + this.rects +'---'+'shapes：'+this.shapes)
   }
 
   forward = () => {
@@ -99,10 +98,12 @@ export default class Eeasel extends Component {
     this.stage.addChild(this.currentShape);
   }
 
-  onStagepressmove(e) {
-    // this.stage.x= this.startX
-    // this.stage.y= this.startY
-    console.log(e)
+  onStagepressmove(evt) {
+    console.log(evt)
+    this.DownState = false;
+    evt.target.x = evt.stageX - this.startX
+    evt.target.y = evt.stageY - this.startY
+
   }
 
   render() {
