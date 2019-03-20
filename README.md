@@ -1,4 +1,4 @@
-## React-dva + easeljs 构建画板
+## React + dva + easeljs 构建画板
 
 ### npm tree
 
