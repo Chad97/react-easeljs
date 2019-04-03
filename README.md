@@ -1,6 +1,6 @@
 ## React + dva + easeljs 构建画板
 
-### npm tree
+### npm file tree
 
 ```powershell
 ├── antd@3.14.0
